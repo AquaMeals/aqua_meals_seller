@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "660983206207",
+    "project_id": "aqua-meals",
+    "storage_bucket": "aqua-meals.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:660983206207:android:dca1b141bfc2fdb4d9038a",
+        "android_client_info": {
+          "package_name": "com.example.aqua_meals_seller"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "660983206207-l4nbnkaam4kjn3rajk03ep92399m32u5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhmq2mtJ9fwAGtHp9PVUiZwcLuuhq5LgU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "660983206207-l4nbnkaam4kjn3rajk03ep92399m32u5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
