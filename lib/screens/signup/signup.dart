@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:aqua_meals_seller/crud/general_methods.dart';
 import 'package:aqua_meals_seller/screens/login/login.dart';
 import 'package:aqua_meals_seller/screens/signup/build_circular_profile_image.dart';
 import 'package:aqua_meals_seller/size_configuration.dart';
@@ -89,14 +89,6 @@ class _SignupFormState extends State<SignupForm> {
     });
   }
 
-  String? getCurrentDate() {
-    int day = DateTime.now().day;
-    int month = DateTime.now().month;
-    int year = DateTime.now().year;
-
-    return "$day/$month/$year";
-  }
-
   void createUser(BuildContext context) async {
     final FormState? _key = _formKey.currentState!;
     bool isValidated = FieldValidations.validationOnButton(formKey: _key);
@@ -107,9 +99,7 @@ class _SignupFormState extends State<SignupForm> {
         child: CircularProgressIndicator(),
       ),
     );
-
     String? _userCreatedDate = getCurrentDate();
-
     String _name = _nameController!.text;
     String _email = _emailController!.text;
     String _password = _passwordController!.text;
@@ -133,64 +123,35 @@ class _SignupFormState extends State<SignupForm> {
 
           String _userID = _user.user!.uid;
 
-          firebase_storage.Reference ref = firebase_storage
-              .FirebaseStorage.instance
-              .ref()
-              .child("Images/$_userID/UserProfileImage/$_imageBaseName");
+          firebase_storage.Reference ref =
+              firebase_storage.FirebaseStorage.instance.ref().child(
+                  "images/Sellers/$_userID/userProfileImage/$_imageBaseName");
 
           await ref.putFile(_profileImageFile);
-
           String _getUserProfileImageUrl = await ref.getDownloadURL();
 
           FirebaseFirestore _db = FirebaseFirestore.instance;
           await _db
-              .collection("Users")
+              .collection("users")
               .doc("WvamEGwHsbNkF3KImk2V")
-              .collection("Sellers")
+              .collection("sellers")
               .doc(_userID)
               .set({
-            "UserID": _userID,
-            "Name": _name,
-            "Email": _email,
-            "PhoneNumber": _phoneNumber,
-            "CNIC": _cnic,
-            "ProfileImage": _getUserProfileImageUrl,
-            "CreatedDate": _userCreatedDate,
+            "userID": _userID,
+            "name": _name,
+            "email": _email,
+            "password": _confirmPassword,
+            "phoneNumber": _phoneNumber,
+            "cnic": _cnic,
+            "profileImage": _getUserProfileImageUrl,
+            "createdDate": _userCreatedDate,
+            "status": 0,
           });
 
           Navigator.pushReplacementNamed(context, Login.loginPageRoute);
         } catch (e) {}
       }
     }
-
-    // try {
-    //   firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
-    //       .ref("Images/User_Profile_Images/$imageBaseName");
-
-    //   await ref.putFile(file);
-    //   String _getUserProfileImageUrl = await ref.getDownloadURL();
-    //   final UserCredential user = await auth.createUserWithEmailAndPassword(
-    //       email: _email, password: _password);
-    //   String _userID = user.user!.uid;
-    //   await db
-    //       .collection("Users")
-    //       .doc("nIyUqGHpCBwgIfkCpmcW")
-    //       .collection("Sellers")
-    //       .doc(_userID)
-    //       .set({
-    //     "userID": _userID,
-    //     "name": _name,
-    //     "email": _email,
-    //     "phoneNumber": _phoneNumber,
-    //     "cnic": _cnic,
-    //     "userCreatedDate": _userCreatedDate,
-    //     "userProfileImage": _getUserProfileImageUrl,
-    //   });
-
-    //   Navigator.pushReplacementNamed(context, Login.loginPageRoute);
-    // } catch (e) {
-    //   // dialogBoxError(context, e: e.toString(), routeName: Home.homePageRoute);
-    // }
   }
 
   void isCheckedTermsAndCondition() {
@@ -220,15 +181,6 @@ class _SignupFormState extends State<SignupForm> {
               return FieldValidations.isName(value: value);
             },
           ),
-          // SizedBox(height: getProportionateScreenHeight(20)),
-          // BuildCustomTextBorderedField(
-          //   hintText: "Your shop name",
-          //   prefixIcon: Icons.shop,
-          //   textInputType: TextInputType.name,
-          //   validator: (value) {
-          //     return null;
-          //   },
-          // ),
           SizedBox(height: getProportionateScreenHeight(5)),
           BuildCustomTextUnderlinedField(
             controller: _emailController,

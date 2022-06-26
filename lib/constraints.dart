@@ -15,9 +15,24 @@ const Map<int, Color> color = {
 const MaterialColor colorCustom = MaterialColor(0xFF0977de, color);
 const Color? kPrimaryColor = Color(0xFF2189eb);
 const Color? lightgreyColor = Colors.black54;
+const Color? whiteColor = Color(0xFFffffff);
 
 const EdgeInsetsGeometry? textFieldContentPadding =
     EdgeInsets.symmetric(vertical: 13);
+
+OutlineInputBorder coloredErrorOutlineInputBorder() {
+  return const OutlineInputBorder(
+    borderRadius: BorderRadius.all(Radius.circular(30)),
+    borderSide: BorderSide(color: Colors.red),
+  );
+}
+
+OutlineInputBorder coloredOutlineInputBorder(BuildContext context) {
+  return OutlineInputBorder(
+    borderRadius: const BorderRadius.all(Radius.circular(30)),
+    borderSide: BorderSide(color: Theme.of(context).primaryColor),
+  );
+}
 
 OutlineInputBorder buildCustomOutlineInputBorder(BuildContext context) {
   return OutlineInputBorder(

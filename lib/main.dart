@@ -1,7 +1,6 @@
 import 'package:aqua_meals_seller/my_routes.dart';
 import 'package:aqua_meals_seller/my_themes.dart';
-import 'package:aqua_meals_seller/screens/home/build_curved_bottom_navigation_bar.dart';
-import 'package:aqua_meals_seller/screens/home/home.dart';
+import 'package:aqua_meals_seller/screens/splash_screen/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -32,10 +31,9 @@ class _MyAppState extends State<MyApp> {
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
           return MaterialApp(
-            title: 'Auqa Meals Seller',
+            title: 'Aqua Meals Seller',
             theme: MyThemes.lightTheme(),
-            initialRoute: BuildCurvedBottomNavigationBar
-                .buildCurvedBottomNavigationBarRoute,
+            initialRoute: Splash.splashRoute,
             routes: myRoutes,
           );
         }

@@ -2,8 +2,12 @@ import 'package:aqua_meals_seller/screens/home/build_curved_bottom_navigation_ba
 import 'package:aqua_meals_seller/screens/home/home.dart';
 import 'package:aqua_meals_seller/screens/login/login.dart';
 import 'package:aqua_meals_seller/screens/signup/signup.dart';
+import 'package:aqua_meals_seller/screens/splash_screen/splash.dart';
+import 'package:aqua_meals_seller/screens/splash_screen/splash_screen.dart';
 
 var myRoutes = {
+  Splash.splashRoute: (context) => const Splash(),
+  SplashScreen.splashScreenRoute: (context) => const SplashScreen(),
   Login.loginPageRoute: (context) => const Login(),
   Signup.signupPageRoute: (context) => const Signup(),
   Home.homePageRoute: (context) => const BuildCurvedBottomNavigationBar(),

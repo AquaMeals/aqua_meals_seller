@@ -7,6 +7,10 @@ class MyThemes {
       primarySwatch: colorCustom,
       primaryColor: kPrimaryColor,
       primaryColorLight: lightgreyColor,
+      canvasColor: Colors.white,
+      listTileTheme:
+          const ListTileThemeData(textColor: whiteColor, iconColor: whiteColor),
+      dividerColor: whiteColor,
       inputDecorationTheme:
           const InputDecorationTheme(prefixIconColor: kPrimaryColor),
       appBarTheme:

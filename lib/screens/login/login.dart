@@ -1,5 +1,7 @@
+import 'package:aqua_meals_seller/crud/crud.dart';
+import 'package:aqua_meals_seller/helper/preferences.dart';
+import 'package:aqua_meals_seller/models/users.dart';
 import 'package:aqua_meals_seller/screens/home/build_curved_bottom_navigation_bar.dart';
-import 'package:aqua_meals_seller/screens/home/home.dart';
 import 'package:aqua_meals_seller/screens/signup/signup.dart';
 import 'package:aqua_meals_seller/size_configuration.dart';
 import 'package:aqua_meals_seller/validations.dart';
@@ -7,6 +9,8 @@ import 'package:aqua_meals_seller/widgets/build_custom_button.dart';
 import 'package:aqua_meals_seller/widgets/build_custom_text_field.dart';
 import 'package:aqua_meals_seller/widgets/build_have_an_account_strip.dart';
 import 'package:aqua_meals_seller/widgets/login_signup_heading.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatelessWidget {
@@ -70,6 +74,72 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final GlobalKey<FormState> _formKey = GlobalKey();
+
+  final TextEditingController? _emailController = TextEditingController();
+  final TextEditingController? _passwordController = TextEditingController();
+
+  void signInUser(BuildContext context) async {
+    final FormState? _key = _formKey.currentState!;
+    bool isValidated = FieldValidations.validationOnButton(formKey: _key);
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+
+    String _email = _emailController!.text;
+    String _password = _passwordController!.text;
+
+    if (isValidated == true) {
+      try {
+        FirebaseAuth auth = FirebaseAuth.instance;
+        final UserCredential _user = await auth.signInWithEmailAndPassword(
+            email: _email, password: _password);
+
+        String _userID = _user.user!.uid;
+
+        CRUD().fetchUserCredentials(userID: _userID);
+        await SharedPreferencesHelper().setAuthToken(_userID);
+        Navigator.pushReplacementNamed(context,
+            BuildCurvedBottomNavigationBar.buildCurvedBottomNavigationBarRoute);
+      } catch (e) {
+        showErrorMessage(
+          context: context,
+          e: e,
+          title: "Unexpected Error Found",
+          content: e.toString(),
+        );
+      }
+    }
+  }
+
+  Future<dynamic> showErrorMessage(
+      {BuildContext? context, Object? e, String? title, String? content}) {
+    return showDialog(
+      context: context!,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(title!),
+          content: Text(content!),
+          actions: [
+            TextButton(
+              onPressed: () {
+                _emailController!.clear();
+                _passwordController!.clear();
+                // Navigator.of(context).pop();
+                // Navigator.of(context).pop();
+                Navigator.pushReplacementNamed(context, Login.loginPageRoute);
+              },
+              child: const Text("Cancel"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -77,6 +147,7 @@ class _LoginFormState extends State<LoginForm> {
       child: Column(
         children: [
           BuildCustomTextUnderlinedField(
+            controller: _emailController,
             hintText: "Enter your email",
             prefixIcon: Icons.email,
             textInputType: TextInputType.emailAddress,
@@ -86,6 +157,7 @@ class _LoginFormState extends State<LoginForm> {
           ),
           SizedBox(height: getProportionateScreenHeight(5)),
           BuildCustomPasswordUnderlinedField(
+            controller: _passwordController,
             hintText: "Enter your password",
             prefixIcon: Icons.lock,
             textInputType: TextInputType.visiblePassword,
@@ -111,15 +183,7 @@ class _LoginFormState extends State<LoginForm> {
           BuildCustomButton(
             buttonText: "Signin",
             onTap: () {
-              bool _validation = FieldValidations.validationOnButton(
-                  formKey: _formKey.currentState);
-              if (_validation == true) {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: ((context) =>
-                            const BuildCurvedBottomNavigationBar())));
-              }
+              signInUser(context);
             },
           ),
         ],
