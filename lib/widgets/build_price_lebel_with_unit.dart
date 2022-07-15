@@ -1,18 +1,23 @@
-import 'package:aqua_meals_seller/size_configuration.dart';
 import 'package:flutter/material.dart';
 
 class BuildPriceLebelWithUnit extends StatelessWidget {
   final String? _regularPrice;
   final String? _discountedPrice;
   final String? _unit;
+  final double? _smallTextFontSize;
+  final double? _largeTextFontSize;
   const BuildPriceLebelWithUnit({
     Key? key,
     String? regularPrice,
     String? discountedPrice,
     String? unit,
+    double? smallTextFontSize,
+    double? largeTextFontSize,
   })  : _regularPrice = regularPrice,
         _discountedPrice = discountedPrice,
         _unit = unit,
+        _smallTextFontSize = smallTextFontSize,
+        _largeTextFontSize = largeTextFontSize,
         super(key: key);
 
   @override
@@ -31,7 +36,7 @@ class BuildPriceLebelWithUnit extends StatelessWidget {
                       .bodyText1!
                       .color!
                       .withOpacity(0.5),
-                  fontSize: getProportionateScreenWidth(12),
+                  fontSize: _smallTextFontSize,
                 ),
               ),
               RichText(
@@ -41,7 +46,7 @@ class BuildPriceLebelWithUnit extends StatelessWidget {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.red,
-                      fontSize: getProportionateScreenWidth(20),
+                      fontSize: _largeTextFontSize,
                     ),
                   ),
                   TextSpan(
@@ -49,7 +54,7 @@ class BuildPriceLebelWithUnit extends StatelessWidget {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).textTheme.bodyText1!.color!,
-                      fontSize: getProportionateScreenWidth(20),
+                      fontSize: _largeTextFontSize,
                     ),
                   ),
                 ]),
@@ -63,7 +68,7 @@ class BuildPriceLebelWithUnit extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.red,
-                  fontSize: getProportionateScreenWidth(20),
+                  fontSize: _largeTextFontSize,
                 ),
               ),
               TextSpan(
@@ -71,7 +76,7 @@ class BuildPriceLebelWithUnit extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).textTheme.bodyText1!.color!,
-                  fontSize: getProportionateScreenWidth(20),
+                  fontSize: _largeTextFontSize,
                 ),
               ),
             ]),

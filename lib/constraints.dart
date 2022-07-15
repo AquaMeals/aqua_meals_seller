@@ -13,8 +13,10 @@ const Map<int, Color> color = {
   900: Color.fromRGBO(136, 14, 79, 1),
 };
 const MaterialColor colorCustom = MaterialColor(0xFF0977de, color);
-const Color? kPrimaryColor = Color(0xFF2189eb);
-const Color? lightgreyColor = Colors.black54;
+const Color? klightPrimaryColor = Color(0xFF2189eb);
+Color? klightCardColor = const Color(0xFF2189eb).withOpacity(0.13);
+const Color? klightTextColor = Color(0xFF000000);
+const Color? klightgreyColor = Colors.black54;
 const Color? whiteColor = Color(0xFFffffff);
 
 const EdgeInsetsGeometry? textFieldContentPadding =

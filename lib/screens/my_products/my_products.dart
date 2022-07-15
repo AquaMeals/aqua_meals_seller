@@ -1,8 +1,11 @@
 import 'package:aqua_meals_seller/crud/crud.dart';
+import 'package:aqua_meals_seller/crud/general_methods.dart';
 import 'package:aqua_meals_seller/models/products.dart';
+import 'package:aqua_meals_seller/widgets/build_price_lebel_with_unit.dart';
 import 'package:aqua_meals_seller/screens/product_details/product_details.dart';
 import 'package:aqua_meals_seller/size_configuration.dart';
 import 'package:aqua_meals_seller/widgets/my_drawer.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class MyProducts extends StatelessWidget {
@@ -72,22 +75,15 @@ class MyProductsTile extends StatelessWidget {
           width: SizeConfig.screenWidth,
           height: getProportionateScreenHeight(90),
           decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor.withOpacity(0.13),
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            color: Theme.of(context).cardColor,
+            borderRadius: BorderRadius.all(
+                Radius.circular(getProportionateScreenWidth(10))),
           ),
           child: Row(
             children: [
-              Hero(
+              CardImage(
                 tag: _productData.productID.toString(),
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  child: Image.network(
-                    _productData.productImageUrl!,
-                    width: getProportionateScreenHeight(90),
-                    height: getProportionateScreenHeight(90),
-                    fit: BoxFit.cover,
-                  ),
-                ),
+                imageURL: _productData.productImageUrl!.toString(),
               ),
               SizedBox(width: getProportionateScreenWidth(15)),
               Expanded(
@@ -97,46 +93,50 @@ class MyProductsTile extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
-                        height: getProportionateScreenHeight(25),
-                        // color: Colors.red,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              _productData.productName![0].toUpperCase() +
-                                  _productData.productName!.substring(1),
-                              style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              _productData.discountedPrice!.isEmpty
-                                  ? "Rs ${_productData.regularPrice}/${_productData.unit}"
-                                  : "Rs ${_productData.discountedPrice}/${_productData.unit}",
-                              style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              top: getProportionateScreenHeight(5)),
-                          child: Text(
-                            _productData.productDescription!,
-                            maxLines: 3,
-                            textAlign: TextAlign.left,
-                            overflow: TextOverflow.ellipsis,
+                      SizedBox(height: getProportionateScreenHeight(8)),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            _productData.productName!.capitalize(),
                             style: TextStyle(
-                              color: Theme.of(context)
-                                  .primaryColor
-                                  .withOpacity(0.7),
+                              color:
+                                  Theme.of(context).textTheme.bodyText1!.color,
+                              fontWeight: FontWeight.bold,
+                              fontSize: getProportionateScreenWidth(15),
                             ),
+                          ),
+                          BuildPriceLebelWithUnit(
+                            regularPrice: _productData.regularPrice,
+                            discountedPrice: _productData.discountedPrice,
+                            unit: _productData.unit,
+                            largeTextFontSize: getProportionateScreenWidth(15),
+                            smallTextFontSize: getProportionateScreenWidth(11),
+                          ),
+                          // Text(
+                          //   _productData.discountedPrice!.isEmpty
+                          //       ? "Rs ${_productData.regularPrice}/${_productData.unit}"
+                          //       : "Rs ${_productData.discountedPrice}/${_productData.unit}",
+                          //   style: TextStyle(
+                          //     color: Theme.of(context).primaryColor,
+                          //     fontWeight: FontWeight.bold,
+                          //   ),
+                          // ),
+                        ],
+                      ),
+                      SizedBox(height: getProportionateScreenHeight(5)),
+                      Expanded(
+                        child: Text(
+                          _productData.productDescription!.capitalize(),
+                          maxLines: 3,
+                          textAlign: TextAlign.left,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: Theme.of(context)
+                                .textTheme
+                                .bodyText1!
+                                .color!
+                                .withOpacity(0.5),
                           ),
                         ),
                       ),
@@ -149,5 +149,41 @@ class MyProductsTile extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class CardImage extends StatelessWidget {
+  final String? _tag;
+  final String? _imageURL;
+  const CardImage({Key? key, String? tag, required String? imageURL})
+      : _tag = tag,
+        _imageURL = imageURL,
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return _imageURL!.isNotEmpty
+        ? Hero(
+            tag: _tag!,
+            child: ClipRRect(
+              borderRadius: BorderRadius.all(
+                  Radius.circular(getProportionateScreenWidth(10))),
+              child: CachedNetworkImage(
+                imageUrl: _imageURL!,
+                key: UniqueKey(),
+                width: getProportionateScreenHeight(90),
+                height: getProportionateScreenHeight(90),
+                fit: BoxFit.cover,
+              ),
+            ),
+          )
+        : Container(
+            width: getProportionateScreenHeight(90),
+            height: getProportionateScreenHeight(90),
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+            ),
+          );
   }
 }
