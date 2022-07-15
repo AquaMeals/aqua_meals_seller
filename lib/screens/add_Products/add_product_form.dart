@@ -48,28 +48,32 @@ class _AddProductFormState extends State<AddProductForm> {
   }
 
   void addProduct(BuildContext context) async {
-    final FormState? _key = _formKey.currentState!;
-    bool isValidated = FieldValidations.validationOnButton(formKey: _key);
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => const Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
-    String? _userCreatedDate = getCurrentDate();
-    String _productName = _productNameController!.text;
-    String _regularPrice = _regularPriceController!.text;
-    String _discountedPrice = _discountedPriceController!.text;
-    String _productDescription = _productDescriptionController!.text;
     if (Users.getStatus != 0) {
+      final FormState? _key = _formKey.currentState!;
+      bool isValidated = FieldValidations.validationOnButton(formKey: _key);
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+
+      String? _userCreatedDate = getCurrentDate();
+      String _productName = _productNameController!.text;
+      String _regularPrice = _regularPriceController!.text;
+      String _discountedPrice = _discountedPriceController!.text;
+      String _productDescription = _productDescriptionController!.text;
+
       File _profileImageFile = File(_imagePath!);
 
       String _imageBaseName = basename(_profileImageFile.path);
 
       if (isValidated == true &&
           _profileImageFile.path != "" &&
-          _currentProductStatusValue != null) {
+          _currentProductStatusValue != null &&
+          selectedUnit!.isNotEmpty == true &&
+          selectedCategory!.isNotEmpty == true) {
         try {
           firebase_storage.Reference ref =
               firebase_storage.FirebaseStorage.instance.ref().child(
@@ -91,6 +95,8 @@ class _AddProductFormState extends State<AddProductForm> {
             "description": _productDescription,
             "imageURL": _getProductImageUrl,
             "status": _currentProductStatusValue,
+            "category": selectedCategory,
+            "unit": selectedUnit,
             "createdDate": _userCreatedDate,
           });
 

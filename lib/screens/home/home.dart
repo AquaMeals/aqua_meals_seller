@@ -1,11 +1,29 @@
+import 'package:aqua_meals_seller/crud/crud.dart';
+import 'package:aqua_meals_seller/models/users.dart';
+import 'package:aqua_meals_seller/screens/home/build_circular_percentage_indicator.dart';
 import 'package:aqua_meals_seller/size_configuration.dart';
 import 'package:aqua_meals_seller/widgets/my_drawer.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   static const String homePageRoute = "/home";
   const Home({Key? key}) : super(key: key);
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  // List<Products> _productsList = [];
+  final CRUD crudOperations = CRUD();
+  Stream<QuerySnapshot>? myProductsStream;
+
+  @override
+  void initState() {
+    myProductsStream = crudOperations.fetchMyProductsStream();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,48 +43,16 @@ class Home extends StatelessWidget {
             SizedBox(height: getProportionateScreenHeight(30)),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                SizedBox(
-                  child: CircularPercentIndicator(
-                    radius: 60.0,
-                    lineWidth: 10.0,
-                    animation: true,
-                    animationDuration: 500,
-                    percent: 1,
-                    circularStrokeCap: CircularStrokeCap.round,
-                    progressColor: Theme.of(context).primaryColor,
-                    center: const Text(
-                      "70.0%",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 20.0),
-                    ),
-                    footer: const Text(
-                      "Confirmed Orders",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 17.0),
-                    ),
-                  ),
+              children: const [
+                BuildCircularPercentageIndicator(
+                  centerText: "70.0%",
+                  bottomLabel: "Confirmed Orders",
+                  percentage: 0.9,
                 ),
-                SizedBox(
-                  child: CircularPercentIndicator(
-                    radius: 60.0,
-                    lineWidth: 10.0,
-                    animation: true,
-                    animationDuration: 500,
-                    percent: 0.3,
-                    circularStrokeCap: CircularStrokeCap.round,
-                    progressColor: Theme.of(context).primaryColor,
-                    center: const Text(
-                      "30.0%",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 20.0),
-                    ),
-                    footer: const Text(
-                      "Pending Orders",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 17.0),
-                    ),
-                  ),
+                BuildCircularPercentageIndicator(
+                  centerText: "30.0%",
+                  bottomLabel: "Pending Orders",
+                  percentage: 0.3,
                 ),
               ],
             ),
@@ -74,47 +60,45 @@ class Home extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                SizedBox(
-                  child: CircularPercentIndicator(
-                    radius: 60.0,
-                    lineWidth: 10.0,
-                    animation: true,
-                    animationDuration: 500,
-                    percent: 0.7,
-                    circularStrokeCap: CircularStrokeCap.round,
-                    progressColor: Theme.of(context).primaryColor,
-                    center: const Text(
-                      "70.0%",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 20.0),
-                    ),
-                    footer: const Text(
-                      "Total Products",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 17.0),
-                    ),
-                  ),
+                StreamBuilder(
+                  stream: crudOperations.fetchMyProductsStream(),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (!snapshot.hasData) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else {
+                      List myproductsList = [];
+                      for (int i = 0; i < snapshot.data.docs.length; i++) {
+                        DocumentSnapshot snap = snapshot.data.docs[i];
+                        myproductsList.add(snap.data());
+                      }
+                      // print(myproducts[0]['unit']);
+                      return BuildCircularPercentageIndicator(
+                        centerText: "${myproductsList.length}",
+                        bottomLabel: "Total Products",
+                        percentage: myproductsList.length / 100,
+                      );
+                    }
+                  },
                 ),
-                SizedBox(
-                  child: CircularPercentIndicator(
-                    radius: 60.0,
-                    lineWidth: 10.0,
-                    animation: true,
-                    animationDuration: 500,
-                    percent: 0.3,
-                    circularStrokeCap: CircularStrokeCap.round,
-                    progressColor: Theme.of(context).primaryColor,
-                    center: const Text(
-                      "30.0%",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 20.0),
-                    ),
-                    footer: const Text(
-                      "Total Sales",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 17.0),
-                    ),
-                  ),
+                StreamBuilder(
+                  stream: crudOperations.fetchMyProductsStream(),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (!snapshot.hasData) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else {
+                      List myproducts = [];
+                      for (int i = 0; i < snapshot.data.docs.length; i++) {
+                        DocumentSnapshot snap = snapshot.data.docs[i];
+                        myproducts.add(snap.data());
+                      }
+                      // print(myproducts[0]['unit']);
+                      return BuildCircularPercentageIndicator(
+                        centerText: "${myproducts.length}",
+                        bottomLabel: "Total Sales",
+                        percentage: myproducts.length / 100,
+                      );
+                    }
+                  },
                 ),
               ],
             ),

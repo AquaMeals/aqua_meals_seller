@@ -1,9 +1,7 @@
 import 'package:aqua_meals_seller/crud/crud.dart';
 import 'package:aqua_meals_seller/helper/preferences.dart';
-import 'package:aqua_meals_seller/models/users.dart';
 import 'package:aqua_meals_seller/screens/home/build_curved_bottom_navigation_bar.dart';
 import 'package:aqua_meals_seller/screens/login/login.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Splash extends StatefulWidget {

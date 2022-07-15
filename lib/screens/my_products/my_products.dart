@@ -11,8 +11,6 @@ class MyProducts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    String? imageUrl =
-        "https://images.pexels.com/photos/302743/pexels-photo-302743.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500";
     CRUD _crudOperations = CRUD();
     return SafeArea(
       top: true,
@@ -43,7 +41,6 @@ class MyProducts extends StatelessWidget {
                 );
               }
               return const Center(child: CircularProgressIndicator());
-              // MyProductsTile(imageUrl: imageUrl)
             },
           ),
         ),
@@ -70,62 +67,81 @@ class MyProductsTile extends StatelessWidget {
                     )));
       },
       child: Padding(
-        padding: const EdgeInsets.only(top: 15.0),
-        child: SizedBox(
+        padding: EdgeInsets.only(top: getProportionateScreenHeight(15)),
+        child: Container(
           width: SizeConfig.screenWidth,
-          // height: 120,
-          // decoration: const BoxDecoration(color: Colors.amber),
+          height: getProportionateScreenHeight(90),
+          decoration: BoxDecoration(
+            color: Theme.of(context).primaryColor.withOpacity(0.13),
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
+          ),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                child: Image.network(
-                  _productData.productImageUrl!,
-                  width: 85,
-                  height: 85,
-                  fit: BoxFit.cover,
+              Hero(
+                tag: _productData.productID.toString(),
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  child: Image.network(
+                    _productData.productImageUrl!,
+                    width: getProportionateScreenHeight(90),
+                    height: getProportionateScreenHeight(90),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
-              SizedBox(width: getProportionateScreenWidth(20)),
+              SizedBox(width: getProportionateScreenWidth(15)),
               Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          // "Silver Pomfret",
-                          _productData.productName!,
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          "Rs ${_productData.regularPrice}/Kilogram",
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8),
-                      child: Text(
-                        _productData.productDescription!,
-                        maxLines: 3,
-                        textAlign: TextAlign.justify,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color:
-                              Theme.of(context).primaryColor.withOpacity(0.7),
+                child: Container(
+                  padding:
+                      EdgeInsets.only(right: getProportionateScreenWidth(15)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: getProportionateScreenHeight(25),
+                        // color: Colors.red,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              _productData.productName![0].toUpperCase() +
+                                  _productData.productName!.substring(1),
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              _productData.discountedPrice!.isEmpty
+                                  ? "Rs ${_productData.regularPrice}/${_productData.unit}"
+                                  : "Rs ${_productData.discountedPrice}/${_productData.unit}",
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                  ],
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              top: getProportionateScreenHeight(5)),
+                          child: Text(
+                            _productData.productDescription!,
+                            maxLines: 3,
+                            textAlign: TextAlign.left,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: Theme.of(context)
+                                  .primaryColor
+                                  .withOpacity(0.7),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

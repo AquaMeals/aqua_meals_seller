@@ -16,6 +16,24 @@ class CRUD {
     await _authInstance.signOut();
   }
 
+  fetchMyProductsStream() {
+    Stream<QuerySnapshot> myProductsStream = FirebaseFirestore.instance
+        .collection("products")
+        .doc(Users.getUserId)
+        .collection("myProducts")
+        .snapshots();
+    return myProductsStream;
+  }
+
+  deleteMyProduct(String productID) async {
+    await _db
+        .collection("products")
+        .doc(Users.getUserId)
+        .collection("myProducts")
+        .doc(productID)
+        .delete();
+  }
+
   fetchProducts() async {
     List<Products> _productsList = [];
 
@@ -24,10 +42,12 @@ class CRUD {
         .doc(Users.getUserId)
         .collection("myProducts")
         .get();
-    _query.docs.forEach((docs) {
-      Products _product = Products.fromMap(docs.data());
+
+    for (var document in _query.docs) {
+      String productID = document.id;
+      Products _product = Products.fromMap(document.data(), productID);
       _productsList.add(_product);
-    });
+    }
     return _productsList;
   }
 
@@ -58,11 +78,11 @@ class CRUD {
     List<ProductCategory> _productsCategoryList = [];
     QuerySnapshot<Map<String, dynamic>> _query =
         await _db.collection("categories").get();
-    _query.docs.forEach((document) {
+    for (var document in _query.docs) {
       ProductCategory _productCategory =
           ProductCategory.fromMap(document.data(), document.id);
       _productsCategoryList.add(_productCategory);
-    });
+    }
     return _productsCategoryList;
   }
 }

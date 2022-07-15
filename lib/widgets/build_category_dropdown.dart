@@ -62,7 +62,7 @@ class BuildCategoryDropdown extends StatelessWidget {
                   iconEnabledColor: Theme.of(context).primaryColor,
                   isExpanded: true,
                   hint: Text(
-                    "${_collectionName}",
+                    "$_collectionName",
                     style: TextStyle(color: Theme.of(context).primaryColor),
                   ),
                 ),

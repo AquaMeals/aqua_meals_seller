@@ -1,6 +1,5 @@
 import 'package:aqua_meals_seller/crud/crud.dart';
 import 'package:aqua_meals_seller/helper/preferences.dart';
-import 'package:aqua_meals_seller/models/users.dart';
 import 'package:aqua_meals_seller/screens/home/build_curved_bottom_navigation_bar.dart';
 import 'package:aqua_meals_seller/screens/signup/signup.dart';
 import 'package:aqua_meals_seller/size_configuration.dart';
@@ -9,7 +8,6 @@ import 'package:aqua_meals_seller/widgets/build_custom_button.dart';
 import 'package:aqua_meals_seller/widgets/build_custom_text_field.dart';
 import 'package:aqua_meals_seller/widgets/build_have_an_account_strip.dart';
 import 'package:aqua_meals_seller/widgets/login_signup_heading.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

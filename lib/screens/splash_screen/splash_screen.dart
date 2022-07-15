@@ -10,7 +10,7 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: AnimatedSplashScreen(
-          splash: Container(
+          splash: SizedBox(
             width: 350,
             // height: 1500,
             child: Image.asset(
