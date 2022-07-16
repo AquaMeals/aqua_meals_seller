@@ -41,11 +41,9 @@ class _SplashState extends State<Splash> {
     return Scaffold(
       backgroundColor: Theme.of(context).canvasColor,
       body: Center(
-        child: Container(
-          child: Image.asset(
-            "assets/images/aqua_meals_logo.jpeg",
-            fit: BoxFit.cover,
-          ),
+        child: Image.asset(
+          "assets/images/aqua_meals_logo.jpeg",
+          fit: BoxFit.cover,
         ),
       ),
     );

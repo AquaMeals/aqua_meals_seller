@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:aqua_meals_seller/crud/general_methods.dart';
 import 'package:aqua_meals_seller/screens/login/login.dart';
-import 'package:aqua_meals_seller/screens/signup/build_circular_profile_image.dart';
+import 'package:aqua_meals_seller/widgets/build_circular_profile_image.dart';
 import 'package:aqua_meals_seller/size_configuration.dart';
 import 'package:aqua_meals_seller/validations.dart';
 import 'package:aqua_meals_seller/widgets/build_custom_button.dart';

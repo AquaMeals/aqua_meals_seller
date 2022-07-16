@@ -1,5 +1,4 @@
 import 'package:aqua_meals_seller/crud/crud.dart';
-import 'package:aqua_meals_seller/models/users.dart';
 import 'package:aqua_meals_seller/screens/home/build_circular_percentage_indicator.dart';
 import 'package:aqua_meals_seller/size_configuration.dart';
 import 'package:aqua_meals_seller/widgets/my_drawer.dart';

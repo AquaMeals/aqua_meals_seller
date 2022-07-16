@@ -1,4 +1,5 @@
 import 'package:aqua_meals_seller/helper/preferences.dart';
+import 'package:aqua_meals_seller/models/orders.dart';
 import 'package:aqua_meals_seller/models/product_categories.dart';
 import 'package:aqua_meals_seller/models/products.dart';
 import 'package:aqua_meals_seller/models/users.dart';
@@ -61,18 +62,6 @@ class CRUD {
     Map<String, dynamic>? userDataMap = _query.data();
     Users.fromMap(userDataMap!);
   }
-
-  // fetchProductCategories() async {
-  //   List<ProductCategory> _productsCategoryList = [];
-  //   QuerySnapshot<Map<String, dynamic>> _query =
-  //       await _db.collection("categories").get();
-  //   _query.docs.forEach((document) {
-  //     ProductCategory _productCategory =
-  //         ProductCategory.fromMap(document.data(), document.id);
-  //     _productsCategoryList.add(_productCategory);
-  //   });
-  //   return _productsCategoryList;
-  // }
 
   fetchProductCategories() async {
     List<ProductCategory> _productsCategoryList = [];

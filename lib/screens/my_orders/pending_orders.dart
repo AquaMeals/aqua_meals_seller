@@ -1,98 +1,33 @@
+import 'package:aqua_meals_seller/crud/crud.dart';
 import 'package:aqua_meals_seller/screens/order_details/order_details.dart';
 import 'package:aqua_meals_seller/size_configuration.dart';
-import 'package:aqua_meals_seller/widgets/my_drawer.dart';
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-class MyOrders extends StatefulWidget {
-  const MyOrders({Key? key}) : super(key: key);
-
-  @override
-  State<MyOrders> createState() => _MyOrdersState();
-}
-
-class _MyOrdersState extends State<MyOrders> {
-  int? tabBarViewIndex = 0;
-
-  final List<Widget> _tabBarViews = const [
-    Body(),
-    Center(child: Text("Confirmed")),
-  ];
-  TabController? _controller;
-  int _selectedIndex = 0;
-  @override
-  void initState() {
-    super.initState();
-    // _controller = TabController(length: 5, vsync: this);
-  }
-
-  @override
-  void dispose() {
-    _controller!.dispose();
-    super.dispose();
-  }
+class PendingOrders extends StatelessWidget {
+  static const String pendingOrdersRoute = "/pendingOrdersRoute";
+  const PendingOrders({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
-
-    return SafeArea(
-      top: true,
-      bottom: false,
-      child: Scaffold(
-        extendBody: true,
-        drawer: const MyDrawer(),
-        appBar: AppBar(
-          centerTitle: true,
-          title: const Text("My Orders"),
-          bottom: TabBar(
-            tabs: [
-              _tabBarOptionWidget(
-                  icon: MdiIcons.clipboardClockOutline,
-                  label: "Pending Orders"),
-              _tabBarOptionWidget(
-                  icon: MdiIcons.clipboardCheckOutline,
-                  label: "Confirmed Orders"),
-            ],
-            controller: _controller,
-            indicatorColor: Theme.of(context).scaffoldBackgroundColor,
-          ),
-        ),
-        body: TabBarView(
-          controller: _controller,
-          children: _tabBarViews,
-        ),
-      ),
-    );
-  }
-
-  Widget _tabBarOptionWidget(
-      {required IconData? icon, required String? label}) {
-    return Column(
-      children: [
-        Icon(icon),
-        Text(label!),
-        SizedBox(height: getProportionateScreenHeight(5)),
-      ],
-    );
-  }
-}
-
-class Body extends StatelessWidget {
-  const Body({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-      child: ListView.builder(
-        itemCount: 8,
-        itemBuilder: (context, index) {
-          return const MyOrdersTile();
-        },
-      ),
+    return FutureBuilder(
+      future: CRUD().fetchProducts(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasError) {
+          return const Center(child: Text("Error"));
+        }
+        if (snapshot.connectionState == ConnectionState.done) {
+          return Padding(
+            padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+            child: ListView.builder(
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                return const MyOrdersTile();
+              },
+            ),
+          );
+        }
+        return const Center(child: CircularProgressIndicator());
+      },
     );
   }
 }

@@ -1,9 +1,9 @@
-import 'package:aqua_meals_seller/models/bottom_navigation_key.dart';
+import 'package:aqua_meals_seller/helper/bottom_navigation_key.dart';
 import 'package:aqua_meals_seller/screens/add_Products/add_products.dart';
-import 'package:aqua_meals_seller/screens/my_orders/my_orders.dart';
+import 'package:aqua_meals_seller/screens/my_orders/order_tabbar.dart';
 import 'package:aqua_meals_seller/screens/my_products/my_products.dart';
 import 'package:aqua_meals_seller/screens/home/home.dart';
-import 'package:aqua_meals_seller/screens/product_details/product_details.dart';
+import 'package:aqua_meals_seller/screens/my_profile/my_profile.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -23,10 +23,10 @@ class _BuildCurvedBottomNavigationBarState
 
   final _screens = [
     const MyProducts(),
-    const MyOrders(),
+    const Orders(),
     const Home(),
     const AddProduct(),
-    const Home(),
+    const MyProfile(),
   ];
   // final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
 
