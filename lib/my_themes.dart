@@ -11,6 +11,11 @@ class MyThemes {
       primaryColorLight: klightgreyColor,
       textTheme: const TextTheme(bodyText1: TextStyle(color: klightTextColor)),
       canvasColor: Colors.white,
+      expansionTileTheme: ExpansionTileThemeData(
+        collapsedIconColor: klightPrimaryColor,
+        collapsedBackgroundColor: klightCardColor,
+        backgroundColor: klightCardColor,
+      ),
       listTileTheme:
           const ListTileThemeData(textColor: whiteColor, iconColor: whiteColor),
       dividerColor: whiteColor,

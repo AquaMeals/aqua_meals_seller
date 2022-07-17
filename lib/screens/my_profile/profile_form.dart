@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:aqua_meals_seller/models/users.dart';
 import 'package:aqua_meals_seller/size_configuration.dart';
 import 'package:aqua_meals_seller/validations.dart';
 import 'package:aqua_meals_seller/widgets/build_circular_profile_image.dart';
@@ -19,7 +20,7 @@ class ProfileForm extends StatefulWidget {
 class _ProfileFormState extends State<ProfileForm> {
   String? _imagePath;
   File? _selectedImageFile;
-  bool _isCheckedTermsAndCondition = false;
+
   final TextEditingController? _nameController = TextEditingController();
   final TextEditingController? _emailController = TextEditingController();
   final TextEditingController? _passwordController = TextEditingController();
@@ -37,89 +38,94 @@ class _ProfileFormState extends State<ProfileForm> {
     });
   }
 
-  void isCheckedTermsAndCondition() {
-    setState(() {
-      _isCheckedTermsAndCondition = !_isCheckedTermsAndCondition;
-    });
+  @override
+  void initState() {
+    _nameController!.text = Users.getName!;
+    _emailController!.text = Users.getEmail!;
+    _passwordController!.text = Users.getPassword!;
+    _confirmPasswordController!.text = Users.getPassword!;
+    _phoneNumberController!.text = Users.getPhoneNumber!;
+    _cnicController!.text = Users.getCnic!;
+    super.initState();
   }
 
   final GlobalKey<FormState> _formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: [
-          BuildCircularProfileImage(
-            onTap: pickImage,
-            selectedImageFile: _selectedImageFile,
-          ),
-          SizedBox(height: getProportionateScreenHeight(20)),
-          BuildCustomTextUnderlinedField(
-            controller: _nameController,
-            hintText: "Your full name",
-            prefixIcon: Icons.person,
-            textInputType: TextInputType.name,
-            validator: (value) {
-              return FieldValidations.isName(value: value);
-            },
-          ),
-          SizedBox(height: getProportionateScreenHeight(15)),
-          BuildCustomTextUnderlinedField(
-            controller: _emailController,
-            hintText: "Your email",
-            prefixIcon: Icons.email,
-            textInputType: TextInputType.emailAddress,
-            validator: (value) {
-              return FieldValidations.isEmail(value: value);
-            },
-          ),
-          SizedBox(height: getProportionateScreenHeight(15)),
-          BuildCustomPasswordUnderlinedField(
-            controller: _passwordController,
-            hintText: "your password",
-            prefixIcon: Icons.lock,
-            validator: (value) {
-              return FieldValidations.isPassword(value: value);
-            },
-            textInputType: TextInputType.text,
-          ),
-          SizedBox(height: getProportionateScreenHeight(15)),
-          BuildCustomPasswordUnderlinedField(
-            controller: _confirmPasswordController,
-            hintText: "Confirm your password",
-            prefixIcon: Icons.lock,
-            validator: (value) {
-              return FieldValidations.isPassword(value: value);
-            },
-            textInputType: TextInputType.text,
-          ),
-          SizedBox(height: getProportionateScreenHeight(15)),
-          BuildCustomTextUnderlinedField(
-            controller: _phoneNumberController,
-            hintText: "Your phone number",
-            prefixIcon: Icons.phone,
-            textInputType: TextInputType.phone,
-            validator: (value) {
-              return FieldValidations.isPhoneNumber(value: value);
-            },
-          ),
-          SizedBox(height: getProportionateScreenHeight(15)),
-          BuildCustomTextUnderlinedField(
-            controller: _cnicController,
-            hintText: "Your CNIC number",
-            prefixIcon: Icons.credit_card,
-            textInputType: TextInputType.number,
-            validator: (value) {
-              return null;
-            },
-          ),
-          SizedBox(height: getProportionateScreenHeight(30)),
-          BuildCustomButton(
-            buttonText: "Save",
-            onTap: () {},
-          ),
-        ],
+    return Padding(
+      padding:
+          EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            SizedBox(height: getProportionateScreenHeight(20)),
+            BuildCustomTextUnderlinedField(
+              controller: _nameController,
+              hintText: "Your full name",
+              prefixIcon: Icons.person,
+              textInputType: TextInputType.name,
+              validator: (value) {
+                return FieldValidations.isName(value: value);
+              },
+            ),
+            SizedBox(height: getProportionateScreenHeight(15)),
+            BuildCustomTextUnderlinedField(
+              controller: _emailController,
+              hintText: "Your email",
+              prefixIcon: Icons.email,
+              textInputType: TextInputType.emailAddress,
+              validator: (value) {
+                return FieldValidations.isEmail(value: value);
+              },
+            ),
+            SizedBox(height: getProportionateScreenHeight(15)),
+            BuildCustomPasswordUnderlinedField(
+              controller: _passwordController,
+              hintText: "your password",
+              prefixIcon: Icons.lock,
+              validator: (value) {
+                return FieldValidations.isPassword(value: value);
+              },
+              textInputType: TextInputType.text,
+            ),
+            SizedBox(height: getProportionateScreenHeight(15)),
+            BuildCustomPasswordUnderlinedField(
+              controller: _confirmPasswordController,
+              hintText: "Confirm your password",
+              prefixIcon: Icons.lock,
+              validator: (value) {
+                return FieldValidations.isPassword(value: value);
+              },
+              textInputType: TextInputType.text,
+            ),
+            SizedBox(height: getProportionateScreenHeight(15)),
+            BuildCustomTextUnderlinedField(
+              controller: _phoneNumberController,
+              hintText: "Your phone number",
+              prefixIcon: Icons.phone,
+              textInputType: TextInputType.phone,
+              validator: (value) {
+                return FieldValidations.isPhoneNumber(value: value);
+              },
+            ),
+            SizedBox(height: getProportionateScreenHeight(15)),
+            BuildCustomTextUnderlinedField(
+              controller: _cnicController,
+              hintText: "Your CNIC number",
+              prefixIcon: Icons.credit_card,
+              textInputType: TextInputType.number,
+              validator: (value) {
+                return null;
+              },
+            ),
+            SizedBox(height: getProportionateScreenHeight(30)),
+            BuildCustomButton(
+              buttonText: "Save",
+              onTap: () {},
+            ),
+          ],
+        ),
       ),
     );
   }
