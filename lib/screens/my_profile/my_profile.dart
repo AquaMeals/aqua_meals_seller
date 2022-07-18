@@ -60,7 +60,23 @@ class MyProfile extends StatelessWidget {
                         children: [
                           Container(
                             color: Theme.of(context).scaffoldBackgroundColor,
-                            child: const ProfileForm(),
+                            child: Column(
+                              children: [
+                                SwitchListTile(
+                                  title: Text(
+                                    "Theme",
+                                    style: TextStyle(
+                                      color: Theme.of(context).primaryColor,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                  value: true,
+                                  onChanged: (value) {},
+                                ),
+                                SizedBox(
+                                    height: getProportionateScreenHeight(20)),
+                              ],
+                            ),
                           ),
                         ],
                       ),
