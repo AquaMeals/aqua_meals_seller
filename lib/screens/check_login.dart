@@ -1,8 +1,13 @@
 import 'package:aqua_meals_seller/constraints.dart';
+import 'package:aqua_meals_seller/crud/crud.dart';
 import 'package:aqua_meals_seller/crud/general_methods.dart';
+import 'package:aqua_meals_seller/helper/preferences.dart';
 import 'package:aqua_meals_seller/helper/wave_clipper.dart';
 import 'package:aqua_meals_seller/screens/check_signup.dart';
+import 'package:aqua_meals_seller/screens/home/build_curved_bottom_navigation_bar.dart';
 import 'package:aqua_meals_seller/size_configuration.dart';
+import 'package:aqua_meals_seller/validations.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class CheckLogin extends StatelessWidget {
@@ -13,7 +18,7 @@ class CheckLogin extends StatelessWidget {
     SizeConfig().init(context);
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color(0xFF2189eb),
+        backgroundColor: Theme.of(context).primaryColor,
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -117,14 +122,90 @@ class WaveLogoHeader extends StatelessWidget {
   }
 }
 
-class LoginnForm extends StatelessWidget {
+class LoginnForm extends StatefulWidget {
   const LoginnForm({
     Key? key,
   }) : super(key: key);
 
   @override
+  State<LoginnForm> createState() => _LoginnFormState();
+}
+
+class _LoginnFormState extends State<LoginnForm> {
+  final TextEditingController? _emailController = TextEditingController();
+
+  final TextEditingController? _passwordController = TextEditingController();
+
+  final GlobalKey<FormState> _formKey = GlobalKey();
+
+  void signInUser(BuildContext context) async {
+    final FormState? _key = _formKey.currentState!;
+    bool isValidated = FieldValidations.validationOnButton(formKey: _key);
+
+    String _email = _emailController!.text;
+    String _password = _passwordController!.text;
+
+    if (isValidated == true) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+      try {
+        FirebaseAuth auth = FirebaseAuth.instance;
+        final UserCredential _user = await auth.signInWithEmailAndPassword(
+            email: _email, password: _password);
+
+        String _userID = _user.user!.uid;
+
+        CRUD().fetchUserCredentials(userID: _userID);
+        await SharedPreferencesHelper().setAuthToken(_userID);
+        navigatePushReplacement(
+            context: context, widget: const BuildCurvedBottomNavigationBar());
+        // Navigator.pushReplacementNamed(context,
+        //     BuildCurvedBottomNavigationBar.buildCurvedBottomNavigationBarRoute);
+      } catch (e) {
+        showErrorMessage(
+          context: context,
+          e: e,
+          title: "Unexpected Error Found",
+          content: e.toString(),
+        );
+      }
+    }
+  }
+
+  Future<dynamic> showErrorMessage(
+      {BuildContext? context, Object? e, String? title, String? content}) {
+    return showDialog(
+      context: context!,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(title!),
+          content: Text(content!),
+          actions: [
+            TextButton(
+              onPressed: () {
+                _emailController!.clear();
+                _passwordController!.clear();
+                // Navigator.of(context).pop();
+                // Navigator.of(context).pop();
+                // Navigator.pushReplacementNamed(context, Login.loginPageRoute);
+              },
+              child: const Text("Cancel"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Form(
+      key: _formKey,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -132,17 +213,17 @@ class LoginnForm extends StatelessWidget {
             hintText: "Enter your email",
             prefixIcon: Icons.email_outlined,
             textInputType: TextInputType.emailAddress,
-            controller: TextEditingController(),
+            controller: _emailController,
             validator: (value) {
-              return null;
+              return FieldValidations.isEmail(value: value);
             },
           ),
           SizedBox(height: getProportionateScreenHeight(20)),
           PasswordTextFormField(
             hintText: "Enter your password",
-            controller: TextEditingController(),
+            controller: _passwordController,
             validator: (value) {
-              return null;
+              return FieldValidations.isPassword(value: value);
             },
           ),
           SizedBox(height: getProportionateScreenHeight(20)),
@@ -150,7 +231,9 @@ class LoginnForm extends StatelessWidget {
           SizedBox(height: getProportionateScreenHeight(20)),
           CustomButton(
             text: "Sign in",
-            onTap: () {},
+            onTap: () {
+              signInUser(context);
+            },
           ),
         ],
       ),
@@ -287,6 +370,8 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      borderRadius:
+          BorderRadius.all(Radius.circular(getProportionateScreenWidth(20))),
       onTap: _onTap,
       child: Container(
         width: SizeConfig.screenWidth,

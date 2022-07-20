@@ -1,5 +1,7 @@
 import 'package:aqua_meals_seller/constraints.dart';
+import 'package:aqua_meals_seller/size_configuration.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MyThemes {
   static ThemeData lightTheme() {
@@ -10,7 +12,9 @@ class MyThemes {
       primaryColor: klightPrimaryColor,
       cardColor: klightCardColor,
       primaryColorLight: klightgreyColor,
-      textTheme: const TextTheme(bodyText1: TextStyle(color: klightTextColor)),
+      buttonTheme: const ButtonThemeData(buttonColor: klightPrimaryColor),
+      fontFamily: GoogleFonts.poppins().fontFamily,
+      textTheme: lightTextTheme(),
       canvasColor: Colors.white,
       expansionTileTheme: ExpansionTileThemeData(
         collapsedIconColor: klightPrimaryColor,
@@ -26,4 +30,13 @@ class MyThemes {
           const AppBarTheme(iconTheme: IconThemeData(color: Colors.white)),
     );
   }
+}
+
+TextTheme lightTextTheme() {
+  return const TextTheme(
+    bodyText1: TextStyle(
+      color: klightTextColor,
+      fontSize: 15,
+    ),
+  );
 }

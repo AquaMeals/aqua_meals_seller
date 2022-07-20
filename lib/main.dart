@@ -3,6 +3,7 @@ import 'package:aqua_meals_seller/my_themes.dart';
 import 'package:aqua_meals_seller/screens/check_login.dart';
 import 'package:aqua_meals_seller/screens/login/login.dart';
 import 'package:aqua_meals_seller/screens/splash_screen/splash.dart';
+import 'package:aqua_meals_seller/size_configuration.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 

@@ -22,7 +22,7 @@ class CheckSignup extends StatelessWidget {
                 height: getProportionateScreenHeight(586),
                 child: Padding(
                   padding: EdgeInsets.symmetric(
-                      horizontal: getProportionateScreenWidth(10)),
+                      horizontal: getProportionateScreenWidth(20)),
                   child: Column(
                     children: [
                       const HeaderText(
