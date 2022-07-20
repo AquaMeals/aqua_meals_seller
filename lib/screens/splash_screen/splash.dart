@@ -1,3 +1,4 @@
+import 'package:aqua_meals_seller/constraints.dart';
 import 'package:aqua_meals_seller/crud/crud.dart';
 import 'package:aqua_meals_seller/helper/preferences.dart';
 import 'package:aqua_meals_seller/screens/home/build_curved_bottom_navigation_bar.dart';
@@ -42,7 +43,7 @@ class _SplashState extends State<Splash> {
       backgroundColor: Theme.of(context).canvasColor,
       body: Center(
         child: Image.asset(
-          "assets/images/aqua_meals_logo.jpeg",
+          lightThemeLogo!,
           fit: BoxFit.cover,
         ),
       ),

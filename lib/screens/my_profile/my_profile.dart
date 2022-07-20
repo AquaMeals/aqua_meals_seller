@@ -63,6 +63,10 @@ class MyProfile extends StatelessWidget {
                             child: Column(
                               children: [
                                 SwitchListTile(
+                                  secondary: Icon(
+                                    Icons.light_mode,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
                                   title: Text(
                                     "Theme",
                                     style: TextStyle(
@@ -70,7 +74,8 @@ class MyProfile extends StatelessWidget {
                                       fontWeight: FontWeight.w700,
                                     ),
                                   ),
-                                  value: true,
+                                  value: false,
+                                  activeColor: Theme.of(context).primaryColor,
                                   onChanged: (value) {},
                                 ),
                                 SizedBox(

@@ -1,5 +1,7 @@
 import 'package:aqua_meals_seller/my_routes.dart';
 import 'package:aqua_meals_seller/my_themes.dart';
+import 'package:aqua_meals_seller/screens/check_login.dart';
+import 'package:aqua_meals_seller/screens/login/login.dart';
 import 'package:aqua_meals_seller/screens/splash_screen/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -33,8 +35,9 @@ class _MyAppState extends State<MyApp> {
           return MaterialApp(
             title: 'Aqua Meals Seller',
             theme: MyThemes.lightTheme(),
-            initialRoute: Splash.splashRoute,
-            routes: myRoutes,
+            home: const CheckLogin(),
+            // initialRoute: Splash.splashRoute,
+            // routes: myRoutes,
           );
         }
 

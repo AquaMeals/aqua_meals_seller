@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+const String? lightThemeLogo = "assets/images/aqua_meals_logo.jpeg";
+
 const Map<int, Color> color = {
   50: Color.fromRGBO(136, 14, 79, .1),
   100: Color.fromRGBO(136, 14, 79, .2),
@@ -12,6 +14,7 @@ const Map<int, Color> color = {
   800: Color.fromRGBO(136, 14, 79, .9),
   900: Color.fromRGBO(136, 14, 79, 1),
 };
+
 const MaterialColor colorCustom = MaterialColor(0xFF0977de, color);
 const Color? klightPrimaryColor = Color(0xFF2189eb);
 Color? klightCardColor = const Color(0xFF2189eb).withOpacity(0.13);

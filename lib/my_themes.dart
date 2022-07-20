@@ -5,6 +5,7 @@ class MyThemes {
   static ThemeData lightTheme() {
     return ThemeData(
       scaffoldBackgroundColor: whiteColor,
+      backgroundColor: whiteColor,
       primarySwatch: colorCustom,
       primaryColor: klightPrimaryColor,
       cardColor: klightCardColor,

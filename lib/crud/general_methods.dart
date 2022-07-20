@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 String? getCurrentDate() {
   int day = DateTime.now().day;
   int month = DateTime.now().month;
@@ -14,4 +16,9 @@ extension StringExtension on String {
   String capitalize() {
     return "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
   }
+}
+
+navigatePushReplacement({BuildContext? context, Widget? widget}) {
+  Navigator.pushReplacement(
+      context!, MaterialPageRoute(builder: ((context) => widget!)));
 }
