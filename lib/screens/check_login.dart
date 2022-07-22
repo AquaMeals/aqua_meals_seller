@@ -5,12 +5,14 @@ import 'package:aqua_meals_seller/helper/preferences.dart';
 import 'package:aqua_meals_seller/helper/wave_clipper.dart';
 import 'package:aqua_meals_seller/screens/check_signup.dart';
 import 'package:aqua_meals_seller/screens/home/build_curved_bottom_navigation_bar.dart';
+import 'package:aqua_meals_seller/screens/login/forgot_password.dart';
 import 'package:aqua_meals_seller/size_configuration.dart';
 import 'package:aqua_meals_seller/validations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class CheckLogin extends StatelessWidget {
+  static const String? routeName = "/signin";
   const CheckLogin({Key? key}) : super(key: key);
 
   @override
@@ -24,7 +26,9 @@ class CheckLogin extends StatelessWidget {
             children: [
               const WaveLogoHeader(),
               SizedBox(
-                height: getProportionateScreenHeight(586),
+                // color: Colors.red,
+                height:
+                    SizeConfig.screenHeight - getProportionateScreenHeight(175),
                 child: Padding(
                   padding: EdgeInsets.symmetric(
                       horizontal: getProportionateScreenWidth(20)),
@@ -35,7 +39,7 @@ class CheckLogin extends StatelessWidget {
                         lastText: "Please sign in to continue",
                       ),
                       SizedBox(height: getProportionateScreenHeight(30)),
-                      const LoginnForm(),
+                      const SigninForm(),
                       const Spacer(),
                       NoAccountStrip(
                         firstText: "Don't have an account? ",
@@ -45,7 +49,7 @@ class CheckLogin extends StatelessWidget {
                               context: context, widget: const CheckSignup());
                         },
                       ),
-                      SizedBox(height: getProportionateScreenHeight(5)),
+                      SizedBox(height: getProportionateScreenHeight(10)),
                     ],
                   ),
                 ),
@@ -108,7 +112,7 @@ class WaveLogoHeader extends StatelessWidget {
     return ClipPath(
       clipper: WaveClipperBottom(),
       child: Container(
-        height: getProportionateScreenHeight(185),
+        height: getProportionateScreenHeight(140),
         width: SizeConfig.screenWidth,
         decoration: const BoxDecoration(
           color: Colors.white,
@@ -122,16 +126,16 @@ class WaveLogoHeader extends StatelessWidget {
   }
 }
 
-class LoginnForm extends StatefulWidget {
-  const LoginnForm({
+class SigninForm extends StatefulWidget {
+  const SigninForm({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<LoginnForm> createState() => _LoginnFormState();
+  State<SigninForm> createState() => _SigninFormState();
 }
 
-class _LoginnFormState extends State<LoginnForm> {
+class _SigninFormState extends State<SigninForm> {
   final TextEditingController? _emailController = TextEditingController();
 
   final TextEditingController? _passwordController = TextEditingController();
@@ -218,7 +222,7 @@ class _LoginnFormState extends State<LoginnForm> {
               return FieldValidations.isEmail(value: value);
             },
           ),
-          SizedBox(height: getProportionateScreenHeight(20)),
+          SizedBox(height: getProportionateScreenHeight(10)),
           PasswordTextFormField(
             hintText: "Enter your password",
             controller: _passwordController,
@@ -226,12 +230,23 @@ class _LoginnFormState extends State<LoginnForm> {
               return FieldValidations.isPassword(value: value);
             },
           ),
-          SizedBox(height: getProportionateScreenHeight(20)),
-          ForgotPassword(onTap: () {}),
+          SizedBox(height: getProportionateScreenHeight(10)),
+          ForgotPasswordLabel(
+            onTap: () {
+              navigatePush(
+                  context: context,
+                  widget: ResetPassword(
+                    emailControllerText: _emailController!.text == ""
+                        ? ""
+                        : _emailController!.text,
+                  ));
+            },
+          ),
           SizedBox(height: getProportionateScreenHeight(20)),
           CustomButton(
             text: "Sign in",
-            onTap: () {
+            isDisable: false,
+            onPressed: () {
               signInUser(context);
             },
           ),
@@ -327,9 +342,9 @@ class NoAccountStrip extends StatelessWidget {
   }
 }
 
-class ForgotPassword extends StatelessWidget {
+class ForgotPasswordLabel extends StatelessWidget {
   final Function()? _onTap;
-  const ForgotPassword({
+  const ForgotPasswordLabel({
     Key? key,
     required Function()? onTap,
   })  : _onTap = onTap,
@@ -343,7 +358,7 @@ class ForgotPassword extends StatelessWidget {
         InkWell(
           onTap: _onTap,
           child: Text(
-            "forgot password?",
+            "Reset password?",
             style: TextStyle(
               color: Colors.white,
               // fontWeight: FontWeight.bold,
@@ -356,46 +371,46 @@ class ForgotPassword extends StatelessWidget {
   }
 }
 
-class CustomButton extends StatelessWidget {
-  final String? _text;
-  final Function()? _onTap;
-  const CustomButton({
-    Key? key,
-    required Function()? onTap,
-    String? text,
-  })  : _text = text,
-        _onTap = onTap,
-        super(key: key);
+// class CustomButton extends StatelessWidget {
+//   final String? _text;
+//   final Function()? _onTap;
+//   const CustomButton({
+//     Key? key,
+//     required Function()? onTap,
+//     String? text,
+//   })  : _text = text,
+//         _onTap = onTap,
+//         super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius:
-          BorderRadius.all(Radius.circular(getProportionateScreenWidth(20))),
-      onTap: _onTap,
-      child: Container(
-        width: SizeConfig.screenWidth,
-        height: getProportionateScreenHeight(50),
-        decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.5),
-          border: Border.all(color: Colors.white),
-          borderRadius: BorderRadius.all(
-              Radius.circular(getProportionateScreenWidth(20))),
-        ),
-        child: Center(
-          child: Text(
-            _text!,
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: getProportionateScreenWidth(17),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return InkWell(
+//       borderRadius:
+//           BorderRadius.all(Radius.circular(getProportionateScreenWidth(20))),
+//       onTap: _onTap,
+//       child: Container(
+//         width: SizeConfig.screenWidth,
+//         height: getProportionateScreenHeight(50),
+//         decoration: BoxDecoration(
+//           color: Colors.white.withOpacity(0.5),
+//           border: Border.all(color: Colors.white),
+//           borderRadius: BorderRadius.all(
+//               Radius.circular(getProportionateScreenWidth(20))),
+//         ),
+//         child: Center(
+//           child: Text(
+//             _text!,
+//             style: TextStyle(
+//               color: Colors.white,
+//               fontWeight: FontWeight.bold,
+//               fontSize: getProportionateScreenWidth(17),
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class PasswordTextFormField extends StatefulWidget {
   final String? _hintText;

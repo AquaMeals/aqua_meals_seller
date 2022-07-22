@@ -1,11 +1,14 @@
-import 'package:aqua_meals_seller/constraints.dart';
+import 'dart:io';
+
 import 'package:aqua_meals_seller/crud/general_methods.dart';
-import 'package:aqua_meals_seller/helper/wave_clipper.dart';
 import 'package:aqua_meals_seller/screens/check_login.dart';
+import 'package:aqua_meals_seller/screens/login/forgot_password.dart';
+import 'package:aqua_meals_seller/screens/signup/terms_condition.dart';
 import 'package:aqua_meals_seller/size_configuration.dart';
 import 'package:flutter/material.dart';
 
 class CheckSignup extends StatelessWidget {
+  static const String? routeName = "/signup";
   const CheckSignup({Key? key}) : super(key: key);
 
   @override
@@ -13,35 +16,63 @@ class CheckSignup extends StatelessWidget {
     SizeConfig().init(context);
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color(0xFF2189eb),
+        backgroundColor: Theme.of(context).primaryColor,
         body: SingleChildScrollView(
-          child: Column(
+          child: Stack(
             children: [
-              const WaveLogoHeader(),
+              Column(
+                children: [
+                  const WaveLogoHeader(),
+                  Container(
+                    // color: Colors.red,
+                    height: SizeConfig.screenHeight -
+                        getProportionateScreenHeight(175),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: getProportionateScreenWidth(20)),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const HeaderText(
+                            firstText: "Sign up",
+                            lastText: "Please sign up to register",
+                          ),
+                          SizedBox(height: getProportionateScreenHeight(20)),
+                          const SignuppForm(),
+                          const Spacer(),
+                          NoAccountStrip(
+                            firstText: "Already have an account? ",
+                            lastText: "Sign in",
+                            onTap: () {
+                              navigatePushReplacement(
+                                  context: context, widget: const CheckLogin());
+                            },
+                          ),
+                          SizedBox(height: getProportionateScreenHeight(10)),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               SizedBox(
-                height: getProportionateScreenHeight(586),
+                // color: Colors.amber.withOpacity(0.3),
+                height: getProportionateScreenHeight(220),
                 child: Padding(
                   padding: EdgeInsets.symmetric(
                       horizontal: getProportionateScreenWidth(20)),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      const HeaderText(
-                        firstText: "Sign up",
-                        lastText: "Please sign up to register",
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          CircularProfile(
+                            onTap: () {},
+                            selectedImageFile: File(""),
+                          ),
+                        ],
                       ),
-                      SizedBox(height: getProportionateScreenHeight(20)),
-                      const SignuppForm(),
-                      const Spacer(),
-                      // SizedBox(height: getProportionateScreenHeight(20)),
-                      NoAccountStrip(
-                        firstText: "Already have an account? ",
-                        lastText: "Sign in",
-                        onTap: () {
-                          navigatePushReplacement(
-                              context: context, widget: const CheckLogin());
-                        },
-                      ),
-                      SizedBox(height: getProportionateScreenHeight(5)),
                     ],
                   ),
                 ),
@@ -54,34 +85,68 @@ class CheckSignup extends StatelessWidget {
   }
 }
 
-class WaveLogoHeader extends StatelessWidget {
-  const WaveLogoHeader({
+class CircularProfile extends StatelessWidget {
+  final void Function()? _onTap;
+  final File? _selectedImageFile;
+  const CircularProfile({
     Key? key,
-  }) : super(key: key);
-
+    required void Function()? onTap,
+    required File? selectedImageFile,
+  })  : _onTap = onTap,
+        _selectedImageFile = selectedImageFile,
+        super(key: key);
   @override
   Widget build(BuildContext context) {
-    return ClipPath(
-      clipper: WaveClipperBottom(),
-      child: Container(
-        height: getProportionateScreenHeight(185),
-        width: SizeConfig.screenWidth,
-        decoration: const BoxDecoration(
-          color: Colors.white,
-        ),
-        child: Image.asset(
-          lightThemeLogo!,
-          fit: BoxFit.cover,
-        ),
-      ),
+    return InkWell(
+      onTap: _onTap,
+      borderRadius: BorderRadius.circular(100),
+      child: (_selectedImageFile == null)
+          ? Container(
+              width: getProportionateScreenWidth(80),
+              height: getProportionateScreenHeight(80),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(100),
+                child: Image.file(
+                  _selectedImageFile!,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            )
+          : Container(
+              width: getProportionateScreenWidth(100),
+              height: getProportionateScreenHeight(100),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.3),
+                border: Border.all(color: Colors.white),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(Icons.add_a_photo, color: Colors.white),
+            ),
     );
   }
 }
 
-class SignuppForm extends StatelessWidget {
+class SignuppForm extends StatefulWidget {
   const SignuppForm({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<SignuppForm> createState() => _SignuppFormState();
+}
+
+class _SignuppFormState extends State<SignuppForm> {
+  bool _isCheckedTermsAndCondition = false;
+
+  void isCheckedTermsAndCondition() {
+    setState(() {
+      _isCheckedTermsAndCondition = !_isCheckedTermsAndCondition;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -144,13 +209,83 @@ class SignuppForm extends StatelessWidget {
               return null;
             },
           ),
-          SizedBox(height: getProportionateScreenHeight(20)),
+          SizedBox(height: getProportionateScreenHeight(4)),
+          TermsConditionCheckBox(
+            isCheckedTermsAndCondition: _isCheckedTermsAndCondition,
+            onChange: (value) {
+              isCheckedTermsAndCondition();
+            },
+          ),
+          SizedBox(height: getProportionateScreenHeight(10)),
           CustomButton(
             text: "Sign up",
-            onTap: () {},
+            isDisable: false,
+            onPressed: () {},
           ),
         ],
       ),
+    );
+  }
+}
+
+class TermsConditionCheckBox extends StatelessWidget {
+  final bool? _isCheckedTermsAndCondition;
+  final void Function(bool?)? _onChange;
+  const TermsConditionCheckBox({
+    Key? key,
+    required bool? isCheckedTermsAndCondition,
+    required void Function(bool?)? onChange,
+  })  : _isCheckedTermsAndCondition = isCheckedTermsAndCondition,
+        _onChange = onChange,
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Checkbox(
+          value: _isCheckedTermsAndCondition,
+          onChanged: _onChange,
+          checkColor: Theme.of(context).primaryColor,
+          activeColor: Colors.white,
+          focusColor: Colors.white,
+          side: const BorderSide(
+            color: Colors.white,
+            width: 1.5,
+          ),
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "I've read and understood Aqua Meals",
+              softWrap: true,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: getProportionateScreenWidth(15),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: ((context) => const TermsAndCondition())));
+              },
+              child: Text(
+                "Terms & Conditions",
+                softWrap: true,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: getProportionateScreenWidth(15),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

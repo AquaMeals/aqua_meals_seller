@@ -1,5 +1,4 @@
 import 'package:aqua_meals_seller/constraints.dart';
-import 'package:aqua_meals_seller/size_configuration.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -8,6 +7,7 @@ class MyThemes {
     return ThemeData(
       scaffoldBackgroundColor: whiteColor,
       backgroundColor: whiteColor,
+      brightness: Brightness.light,
       primarySwatch: colorCustom,
       primaryColor: klightPrimaryColor,
       cardColor: klightCardColor,
@@ -36,7 +36,6 @@ TextTheme lightTextTheme() {
   return const TextTheme(
     bodyText1: TextStyle(
       color: klightTextColor,
-      fontSize: 15,
     ),
   );
 }
