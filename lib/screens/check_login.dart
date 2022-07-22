@@ -91,8 +91,9 @@ class HeaderText extends StatelessWidget {
           ),
           Text(
             _lastText!,
+            textAlign: TextAlign.justify,
             style: TextStyle(
-              color: Colors.white.withOpacity(0.3),
+              color: Colors.white,
               fontSize: getProportionateScreenWidth(15),
             ),
           ),
