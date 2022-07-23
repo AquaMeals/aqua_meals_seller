@@ -271,7 +271,7 @@ class TermsConditionCheckBox extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: ((context) => const TermsAndCondition())));
+                        builder: ((context) => TermsAndCondition())));
               },
               child: Text(
                 "Terms & Conditions",
