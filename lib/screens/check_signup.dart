@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:aqua_meals_seller/crud/crud.dart';
 import 'package:aqua_meals_seller/crud/general_methods.dart';
 import 'package:aqua_meals_seller/screens/check_login.dart';
 import 'package:aqua_meals_seller/screens/login/forgot_password.dart';
@@ -228,7 +229,7 @@ class _SignuppFormState extends State<SignuppForm> {
   }
 }
 
-class TermsConditionCheckBox extends StatelessWidget {
+class TermsConditionCheckBox extends StatefulWidget {
   final bool? _isCheckedTermsAndCondition;
   final void Function(bool?)? _onChange;
   const TermsConditionCheckBox({
@@ -240,12 +241,17 @@ class TermsConditionCheckBox extends StatelessWidget {
         super(key: key);
 
   @override
+  State<TermsConditionCheckBox> createState() => _TermsConditionCheckBoxState();
+}
+
+class _TermsConditionCheckBoxState extends State<TermsConditionCheckBox> {
+  @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Checkbox(
-          value: _isCheckedTermsAndCondition,
-          onChanged: _onChange,
+          value: widget._isCheckedTermsAndCondition,
+          onChanged: widget._onChange,
           checkColor: Theme.of(context).primaryColor,
           activeColor: Colors.white,
           focusColor: Colors.white,

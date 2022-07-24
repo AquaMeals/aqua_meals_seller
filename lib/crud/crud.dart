@@ -2,6 +2,7 @@ import 'package:aqua_meals_seller/helper/preferences.dart';
 import 'package:aqua_meals_seller/models/orders.dart';
 import 'package:aqua_meals_seller/models/product_categories.dart';
 import 'package:aqua_meals_seller/models/products.dart';
+import 'package:aqua_meals_seller/models/terms_and_condition.dart';
 import 'package:aqua_meals_seller/models/users.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -73,5 +74,16 @@ class CRUD {
       _productsCategoryList.add(_productCategory);
     }
     return _productsCategoryList;
+  }
+
+  fetchTermsAndConditions() async {
+    // try {} catch (e) {}
+    DocumentSnapshot<Map<String, dynamic>> _query = await _db
+        .collection("terms and condition")
+        .doc("termsAndCondition")
+        .get();
+    Map<String, dynamic> termsAndConditionMap = _query.data()!;
+    // TermsAndConditionModel.fromMap(termsAndConditionMap, _query.id);
+    TermsAndConditionModel.fromMap(map: termsAndConditionMap, docID: _query.id);
   }
 }
