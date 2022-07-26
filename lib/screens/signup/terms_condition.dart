@@ -250,8 +250,7 @@ class _TermsAndConditionState extends State<TermsAndCondition> {
                               }
                               return const Center(
                                   child: CircularProgressIndicator(
-                                color: Colors.white,
-                              ));
+                                      color: Colors.white));
                             },
                           ),
                           // SizedBox(height: getProportionateScreenHeight(10)),
